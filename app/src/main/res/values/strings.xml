@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">SusPension</string>
+    <string name="move_me">Move Me!</string>
 </resources>
