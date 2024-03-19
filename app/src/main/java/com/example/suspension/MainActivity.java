@@ -13,6 +13,14 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.maps.GeoApiContext;
+import com.google.maps.GeocodingApi;
+import com.google.maps.errors.ApiException;
+import com.google.maps.model.GeocodingResult;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,15 +28,22 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView textView;
     private float offsetX, offsetY;
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         textView = findViewById(R.id.textView);
+        System.out.println("Test ? ");
 
         // Afficher la boîte de dialogue au démarrage de l'application
         showInputDialog();
+        try {
+            initGeoCoding();
+        } catch (IOException | InterruptedException | ApiException e) {
+            throw new RuntimeException(e);
+        }
 
         textView.setOnTouchListener((v, event) -> {
             switch (event.getAction()) {
@@ -47,6 +62,17 @@ public class MainActivity extends AppCompatActivity {
             }
             return true;
         });
+    }
+
+    private void initGeoCoding() throws IOException, InterruptedException, ApiException {
+        System.out.println("test");
+        GeoApiContext context = new GeoApiContext.Builder()
+                .apiKey("AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg")
+                .build();
+        GeocodingResult[] results =  GeocodingApi.geocode(context,
+                "1600 Amphitheatre Parkway Mountain View, CA 94043").await();
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        System.out.println(gson.toJson(results[0].addressComponents));
     }
 
     private void showInputDialog() {
