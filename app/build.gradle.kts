@@ -39,4 +39,5 @@ dependencies {
     implementation("com.google.android.material:material:1.11.0")
     implementation("com.google.maps:google-maps-services:2.2.0")
     implementation("org.slf4j:slf4j-simple:1.7.25")
+    implementation("com.google.code.gson:gson:2.10.1")
 }
